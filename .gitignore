@@ -1,0 +1,12 @@
+*.env
+.venv
+.vscode
+
+__pycache__
+
+test*.py
+
+*.log
+
+*.db
+Notes.py

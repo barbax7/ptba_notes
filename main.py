@@ -140,4 +140,4 @@ def welcome(message: Message):
 
 msg = log.info_log(bot, "I'm started!", GROUPID)
 autodelete(bot, msg, 1)
-bot.polling()
+bot.infinity_polling()

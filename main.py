@@ -47,7 +47,7 @@ def get_value(message: Message):
         if a:
             key = db.select("SELECT Text FROM Notes WHERE key = ?", str(a))
             if key:
-                msg = bot.send_message(message.chat.id, str(key[0][0]), reply_to_message_id = has_reply(message))
+                bot.send_message(message.chat.id, str(key[0][0]), reply_to_message_id = has_reply(message))
             else:
                 msg = bot.send_message(message.chat.id, "Note with this key isn't available❌\n/notes")
         else:

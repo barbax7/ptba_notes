@@ -50,7 +50,7 @@ def get_value(message: Message):
             msg = bot.send_message(message.chat.id, "Note with this key isn't available❌\n/notes")
     else:
         msg = bot.send_message(message.chat.id, "Use /get key - to get note.")
-    bot.delete_message(message.chat.id, message.message_id)
+    if message.chat.id == GROUPID: bot.delete_message(message.chat.id, message.message_id)
     autodelete(bot, msg)
 
 @bot.message_handler(commands=['add_note'])

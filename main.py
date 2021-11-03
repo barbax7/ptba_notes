@@ -81,7 +81,7 @@ def add_notes(message: Message):
         autodelete(bot, msg, 2)
         autodelete(bot, message, 2)
     else:
-        bot.send_message(message.chat.id, parse_mode="HTML", text="<b>Notes can be modified ONLY in our group,\n\
+        bot.send_message(message.chat.id, text="<b>Notes can be modified ONLY in our group,\n\
             \nJoin ➤ <a href='https://telegram.me/joinchat/Bn4ixj84FIZVkwhk2jag6A'>pyTelegramBotAPI</a></b>")
 
 @bot.message_handler(commands=['delete_note'])
@@ -104,7 +104,7 @@ def delete_notes(message):
         autodelete(bot, msg, 2)
         autodelete(bot, message, 0)
     else:
-        bot.send_message(message.chat.id, parse_mode="HTML", text="<b>Notes can be modified ONLY in our group,\n\
+        bot.send_message(message.chat.id, text="<b>Notes can be modified ONLY in our group,\n\
             \nJoin ➤ <a href='https://telegram.me/joinchat/Bn4ixj84FIZVkwhk2jag6A'>pyTelegramBotAPI</a></b>")
 
 @bot.message_handler(commands=['add_admin'])
@@ -126,7 +126,7 @@ def add_admins(message: Message):
         autodelete(bot, msg, 2)
         autodelete(bot, message, 1)
     else:
-        bot.send_message(message.chat.id, parse_mode="HTML", text="<b>Admins can be added ONLY in our group,\n\
+        bot.send_message(message.chat.id, text="<b>Admins can be added ONLY in our group,\n\
             \nJoin ➤ <a href='https://telegram.me/joinchat/Bn4ixj84FIZVkwhk2jag6A'>pyTelegramBotAPI</a></b>")
 
 @bot.message_handler(commands=['help'])

@@ -137,11 +137,12 @@ def help_func(message):
 
 @bot.message_handler(commands=['start'])
 def welcome(message: Message):
-    msg = bot.send_message(message.chat.id, "Hi, I'm online!\nSend /help")
-    autodelete(bot, msg, 0.5)
-    if message.chat.id != GROUPID:
+    if message.chat.id == GROUPID:
+        msg = bot.send_message(message.chat.id, "Hi, I'm online!\nSend /help")
+        autodelete(bot, msg, 0.5)
+        autodelete(bot, message, 0)
+    else:
         bot.send_message(message.chat.id, "Join pyTelegramBotApi's Telegram Group to get code snippets\n\nhttps://telegram.me/joinchat/Bn4ixj84FIZVkwhk2jag6A")
-    autodelete(bot, message, 0)
 
 msg = log.info_log(bot, "I'm started!", GROUPID)
 autodelete(bot, msg, 1)

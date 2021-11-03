@@ -27,33 +27,31 @@ GROUPID = int(getenv('GROUP_ID'))
 
 @bot.message_handler(commands=['notes'])
 def notes(message: Message):
-    if message.chat.id == GROUPID:
-        keys = db.select("SELECT Key, Description FROM Notes")
-        if keys:
-            keys.sort()
-            getkeytext = "Use '/get key' - to get note.\n\n<b>Keys:</b>\n"
-            for key in keys:
-                getkeytext+=f"<code>{str(key[0])}</code> - <i>{str(key[1])}</i>\n"
-            msg = bot.send_message(message.chat.id, getkeytext, reply_to_message_id = has_reply(message))
-        else:
-            msg = bot.send_message(message.chat.id, "There are no keys yet. Use\n'/add_note key description\ntext'")
-        bot.delete_message(message.chat.id, message.message_id)
-        autodelete(bot, msg)
+    keys = db.select("SELECT Key, Description FROM Notes")
+    if keys:
+        keys.sort()
+        getkeytext = "Use '/get key' - to get note.\n\n<b>Keys:</b>\n"
+        for key in keys:
+            getkeytext+=f"<code>{str(key[0])}</code> - <i>{str(key[1])}</i>\n"
+        msg = bot.send_message(message.chat.id, getkeytext, reply_to_message_id = has_reply(message))
+    else:
+        msg = bot.send_message(message.chat.id, "There are no keys yet. Use\n'/add_note key description\ntext'")
+    if message.chat.id == GROUPID: bot.delete_message(message.chat.id, message.message_id)
+    autodelete(bot, msg)
 
 @bot.message_handler(commands=['get'])
 def get_value(message: Message):
-    if message.chat.id == GROUPID:
-        a = extract_arguments(message.text)
-        if a:
-            key = db.select("SELECT Text FROM Notes WHERE key = ?", str(a))
-            if key:
-                bot.send_message(message.chat.id, str(key[0][0]), reply_to_message_id = has_reply(message))
-            else:
-                msg = bot.send_message(message.chat.id, "Note with this key isn't available❌\n/notes")
+    a = extract_arguments(message.text)
+    if a:
+        key = db.select("SELECT Text FROM Notes WHERE key = ?", str(a))
+        if key:
+            bot.send_message(message.chat.id, str(key[0][0]), reply_to_message_id = has_reply(message))
         else:
-            msg = bot.send_message(message.chat.id, "Use /get key - to get note.")
-        bot.delete_message(message.chat.id, message.message_id)
-        autodelete(bot, msg)
+            msg = bot.send_message(message.chat.id, "Note with this key isn't available❌\n/notes")
+    else:
+        msg = bot.send_message(message.chat.id, "Use /get key - to get note.")
+    if message.chat.id == GROUPID: bot.delete_message(message.chat.id, message.message_id)
+    autodelete(bot, msg)
 
 @bot.message_handler(commands=['add_note'])
 def add_notes(message: Message):
@@ -82,6 +80,9 @@ def add_notes(message: Message):
             msg = bot.send_message(message.chat.id, "You're not a moderator❌")
         autodelete(bot, msg, 2)
         autodelete(bot, message, 2)
+    else:
+        bot.send_message(message.chat.id, text="<b>Notes can be modified ONLY in our group,\n\
+            \nJoin ➤ <a href='https://telegram.me/joinchat/Bn4ixj84FIZVkwhk2jag6A'>pyTelegramBotAPI</a></b>")
 
 @bot.message_handler(commands=['delete_note'])
 def delete_notes(message):
@@ -102,6 +103,9 @@ def delete_notes(message):
             msg = bot.send_message(message.chat.id, "You're not a moderator ❌")
         autodelete(bot, msg, 2)
         autodelete(bot, message, 0)
+    else:
+        bot.send_message(message.chat.id, text="<b>Notes can be modified ONLY in our group,\n\
+            \nJoin ➤ <a href='https://telegram.me/joinchat/Bn4ixj84FIZVkwhk2jag6A'>pyTelegramBotAPI</a></b>")
 
 @bot.message_handler(commands=['add_admin'])
 def add_admins(message: Message):
@@ -121,22 +125,24 @@ def add_admins(message: Message):
             msg = bot.send_message(message.chat.id, "You're not a moderator❌")
         autodelete(bot, msg, 2)
         autodelete(bot, message, 1)
+    else:
+        bot.send_message(message.chat.id, text="<b>Admins can be added ONLY in our group,\n\
+            \nJoin ➤ <a href='https://telegram.me/joinchat/Bn4ixj84FIZVkwhk2jag6A'>pyTelegramBotAPI</a></b>")
 
 @bot.message_handler(commands=['help'])
 def help_func(message):
-    if message.chat.id == GROUPID:
-        msg = bot.send_message(message.chat.id, "Usage:\n/notes - list of notes\n/add_note - add new note\n/delete_note - delete note\n/get - get note\n/add_admin - add new moderator")
-        autodelete(bot, msg, 2)
-        autodelete(bot, message, 0)
+    msg = bot.send_message(message.chat.id, "Usage:\n/notes - list of notes\n/add_note - add new note\n/delete_note - delete note\n/get - get note\n/add_admin - add new moderator")
+    autodelete(bot, msg, 2)
+    if message.chat.id == GROUPID: autodelete(bot, message, 0)
 
 @bot.message_handler(commands=['start'])
 def welcome(message: Message):
     if message.chat.id == GROUPID:
         msg = bot.send_message(message.chat.id, "Hi, I'm online!\nSend /help")
         autodelete(bot, msg, 0.5)
-    elif message.chat.type == 'private':
+        autodelete(bot, message, 0)
+    else:
         bot.send_message(message.chat.id, "Join pyTelegramBotApi's Telegram Group to get code snippets\n\nhttps://telegram.me/joinchat/Bn4ixj84FIZVkwhk2jag6A")
-    autodelete(bot, message, 0)
 
 msg = log.info_log(bot, "I'm started!", GROUPID)
 autodelete(bot, msg, 1)

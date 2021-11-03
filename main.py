@@ -133,7 +133,7 @@ def add_admins(message: Message):
 def help_func(message):
     msg = bot.send_message(message.chat.id, "Usage:\n/notes - list of notes\n/add_note - add new note\n/delete_note - delete note\n/get - get note\n/add_admin - add new moderator")
     autodelete(bot, msg, 2)
-    autodelete(bot, message, 0)
+    if message.chat.id == GROUPID: autodelete(bot, message, 0)
 
 @bot.message_handler(commands=['start'])
 def welcome(message: Message):

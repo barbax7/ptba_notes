@@ -36,7 +36,7 @@ def notes(message: Message):
         msg = bot.send_message(message.chat.id, getkeytext, reply_to_message_id = has_reply(message))
     else:
         msg = bot.send_message(message.chat.id, "There are no keys yet. Use\n'/add_note key description\ntext'")
-    bot.delete_message(message.chat.id, message.message_id)
+    if message.chat.id == GROUPID: bot.delete_message(message.chat.id, message.message_id)
     autodelete(bot, msg)
 
 @bot.message_handler(commands=['get'])
